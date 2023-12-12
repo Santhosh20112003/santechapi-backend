@@ -12,7 +12,11 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-app.use(cors());
+app.use(cors({
+  origin:["https://santechapihubs.vercel.app"],
+  methods:["GET","POST","DELETE","PUT"],
+  credentials:true
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.ATLAS_URI, {
