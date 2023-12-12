@@ -69,7 +69,6 @@ app.get('/getcounts',decodeToken,async(req,res)=>{
   
 })
 
-
 app.get('/getallapis', decodeToken, async (req, res) => {
   try {
     const email = req.userdetails.email;
