@@ -27,7 +27,9 @@ mongoose.connect(process.env.ATLAS_URI, {
     process.exit(1);
   });
 
-
+app.get('/',(req,res)=>{
+  res.json("Hello");
+})
 
 app.get('/getapiKeys',decodeToken,(req,res)=>{
   const email = req.userdetails.email;
