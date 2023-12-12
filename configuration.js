@@ -1,8 +1,8 @@
-import  admin from 'firebase-admin';
-import credentials from "./credentials.json" assert { type: "json" };
+var admin = require('firebase-admin');
+var credentials = require('./credentials.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials)
-})
+});
 
-export default admin;
+module.exports = admin;

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose') ;
 
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
 const apihubSchema = new Schema(
   {
@@ -33,4 +33,4 @@ apihubModel.createIndexes().catch((error) => {
   console.error("Error creating indexes:", error);
 });
 
-export default apihubModel;
+module.exports = apihubModel;

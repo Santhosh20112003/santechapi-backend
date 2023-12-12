@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose') ;
 
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
@@ -32,4 +32,4 @@ UserModel.createIndexes().catch((error) => {
   console.error("Error creating indexes:", error);
 });
 
-export default UserModel;
+module.exports = UserModel;

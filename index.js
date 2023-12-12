@@ -1,11 +1,11 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import UserModel from './models/users.js';
-import apihubModel from "./models/apihub.js";
-import decodeToken from './verify.js';
-import jwt from 'jsonwebtoken';
+const express = require ("express");
+const cors = require ("cors");
+const mongoose = require ("mongoose");
+const dotenv = require ("dotenv");
+const UserModel = require ('./models/users.js');
+const apihubModel = require ("./models/apihub.js");
+const decodeToken = require ('./verify.js');
+const jwt = require ('jsonwebtoken');
 
 dotenv.config();
 
