@@ -1,104 +1,76 @@
-import express from 'express';
-import cors from 'cors';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import UserModel from './models/users.js';
-import apihubModel from './models/apihub.js';
+import apihubModel from "./models/apihub.js";
 import decodeToken from './verify.js';
 import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
 
-mongoose
-  .connect(process.env.ATLAS_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
+mongoose.connect(process.env.ATLAS_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
-    console.log('MongoDB database connection established successfully');
+    console.log("MongoDB database connection established successfully");
   })
   .catch((error) => {
-    console.error('MongoDB connection error:', error);
+    console.error("MongoDB connection error:", error);
     process.exit(1);
   });
 
-// Database connection
-const connectToDatabase = async () => {
-  try {
-    await mongoose.connect(process.env.ATLAS_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-    });
-    console.log('MongoDB database connection established successfully');
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);
-  }
-};
+  app.get("/", (req, res) => {
+    res.send("Welcome to Santhosh Technologies Api Hub");
+  });
 
-// Error handler middleware
-const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong!');
-};
-
-// Connect to database
-connectToDatabase();
-
-// Routes
-app.get('/', (req, res) => {
-  res.send('Welcome to Santhosh Technologies Api Hub');
-});
-
-app.use('/api', decodeToken);
-
-app.get('/api/getapiKeys', (req, res) => {
+app.get('/getapiKeys',decodeToken,(req,res)=>{
   const email = req.userdetails.email;
 
   UserModel.find({ email: email }, { tokens: 1 })
-    .then((user) => {
-      if (user) {
-        const apiKeys = user[0].tokens;
-        res.json(apiKeys);
-      } else {
-        res.status(404).json('User not found');
-      }
-    })
-    .catch((err) => {
-      res.status(400).json('Error: ' + err);
-    });
-});
+  .then(user => {
+    if (user) {
+      const apiKeys = user[0].tokens;
+      res.json(apiKeys);
+    } else {
+      res.status(404).json('User not found');
+    }
+  })
+  .catch(err => {
+    res.status(400).json('Error: ' + err);
+  });
 
-app.get('/api/getcounts', async (req, res) => {
+})
+
+app.get('/getcounts',decodeToken,async(req,res)=>{
   const email = req.userdetails.email;
 
-  try {
-    const apiResults = await UserModel.find({ email: email });
+  try{
+    const apiResults = await UserModel.find({email:email});
     const Results = await apihubModel.find();
-    if (apiResults) {
+    if(apiResults){
       const details = apiResults[0];
-      res.json({
-        apicount: details.subscribed.length,
-        apikeycount: details.tokens.length,
-        totalcount: Results.length,
-      });
-    } else {
+      res.json({"apicount":details.subscribed.length,"apikeycount":details.tokens.length,"totalcount":Results.length});
+    }
+    else{
       res.status(404).json('Unable to fetch details.');
     }
-  } catch (error) {
-    res.status(400).json('Error: ' + error);
   }
-});
+  catch(error){
+    res.status(400).json('Error: ' + err);
+  }
+  
+})
 
-app.get('/api/getallapis', async (req, res) => {
+
+app.get('/getallapis', decodeToken, async (req, res) => {
   try {
     const email = req.userdetails.email;
 
@@ -126,53 +98,54 @@ app.get('/api/getallapis', async (req, res) => {
   }
 });
 
-app.get('/api/getapis', (req, res) => {
-  try {
-    apihubModel
-      .find()
-      .then((result) => {
-        if (result) {
-          res.json(result);
-        } else {
-          res.status(404).json('Unable to fetch details.');
-        }
-      })
-      .catch((err) => {
-        res.status(400).json('Error: ' + err);
-      });
-  } catch (err) {
+app.get('/getapis',(req,res)=>{
+
+  try{
+    apihubModel.find()
+    .then(result=>{
+      if(result) {
+        res.json(result);
+      } else {
+        res.status(404).json('Unable to fetch details.');
+      }
+    })
+    .catch(err=>{
+      res.status(400).json('Error: ' + err);
+    })
+  }
+  catch(err){
     res.status(400).json('Error: ' + err);
   }
-});
 
-app.get('/api/getsubscribedapis', decodeToken, (req, res) => {
+})
+
+app.get('/getsubscribedapis', decodeToken, (req, res) => {
   const email = req.userdetails.email;
 
   UserModel.findOne({ email: email }, { subscribed: 1 })
-    .then((user) => {
+    .then(user => {
       if (user) {
         const apiKeys = user.subscribed;
-        apihubModel
-          .find({ name: { $in: apiKeys } })
-          .then((result) => {
+        apihubModel.find({ name: { $in: apiKeys } })
+          .then(result => {
             res.json(result);
           })
-          .catch((err) => {
+          .catch(err => {
             res.status(404).json('Details not found');
           });
       } else {
         res.status(404).json('Details not found');
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(400).json('Error: ' + err);
     });
 });
-
-app.get('/api/createapikey', decodeToken, (req, res) => {
+ 
+app.get('/createapikey', decodeToken, (req, res) => {
   const email = req.userdetails.email;
   UserModel.findOne({ email: email })
-    .then((user) => {
+    .then(user => {
       if (user) {
         if (user.tokens.length >= 3) {
           return res.status(403).json('API key limit reached');
@@ -185,26 +158,26 @@ app.get('/api/createapikey', decodeToken, (req, res) => {
           .then(() => {
             res.json({ token: token });
           })
-          .catch((err) => {
+          .catch(err => {
             res.status(400).json('Error: ' + err);
           });
       } else {
         const token = jwt.sign({ email }, process.env.ADMIN_SECRET_KEY);
         const newUser = new UserModel({
           email: email,
-          tokens: [token],
+          tokens: [token]
         });
 
         newUser.save()
           .then(() => {
             res.json({ token: token });
           })
-          .catch((err) => {
+          .catch(err => {
             res.status(400).json('Error: ' + err);
           });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(400).json('Error: ' + err);
     })
     .finally(() => {
@@ -212,37 +185,37 @@ app.get('/api/createapikey', decodeToken, (req, res) => {
     });
 });
 
-app.delete('/api/deleteapiKeys/:token', decodeToken, (req, res) => {
+app.delete('/deleteapiKeys/:token',decodeToken, (req, res) => {
   const email = req.userdetails.email;
   const apikey = req.params.token;
 
   UserModel.updateOne(
     {
       email: email,
-      tokens: apikey,
+      tokens: apikey
     },
     {
       $pull: {
-        tokens: apikey,
-      },
+        tokens: apikey
+      }
     }
   )
     .then((result) => {
-      console.log(result);
+      console.log(result)
       if (result.modifiedCount > 0) {
-        res.sendStatus(200);
+        res.sendStatus(200); 
       } else {
         res.sendStatus(404);
       }
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500);
+      res.sendStatus(500); 
     });
-  console.log(`Api Key Deleted ${apikey}`);
+    console.log(`Api Key Deleted ${apikey}`)
 });
 
-app.get('/api/addSubscribeApi/:api', decodeToken, (req, res) => {
+app.get('/addSubscribeApi/:api', decodeToken, (req, res) => {
   const email = req.userdetails.email;
   const api = req.params.api;
 
@@ -255,15 +228,15 @@ app.get('/api/addSubscribeApi/:api', decodeToken, (req, res) => {
       if (user) {
         res.status(200).json({ email: user.email, subscribed: user.subscribed });
       } else {
-        res.status(403).json({ message: 'User not found' });
+        res.status(403).json({ message: "User not found" });
       }
     })
     .catch((error) => {
-      res.status(400).json({ message: 'Error appending element', error: error });
+      res.status(400).json({ message: "Error appending element", error: error });
     });
 });
 
-app.get('/api/removeSubscribeApi/:api', decodeToken, (req, res) => {
+app.get('/removeSubscribeApi/:api', decodeToken, (req, res) => {
   const email = req.userdetails.email;
   const api = req.params.api;
 
@@ -276,18 +249,14 @@ app.get('/api/removeSubscribeApi/:api', decodeToken, (req, res) => {
       if (user) {
         res.status(200).json({ email: user.email, subscribed: user.subscribed });
       } else {
-        res.status(403).json({ message: 'User not found' });
+        res.status(403).json({ message: "User not found" });
       }
     })
     .catch((error) => {
-      res.status(400).json({ message: 'Error removing element', error: error });
+      res.status(400).json({ message: "Error removing element", error: error });
     });
 });
-
-app.get('*', (req, res) => {
-  res.status(404).send('Content Not Found Here...☹️');
-});
-
+             
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
