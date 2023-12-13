@@ -1,4 +1,9 @@
-var admin = require("./configuration.js");
+var admin = require('firebase-admin');
+var credentials = require('./credentials.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(credentials)
+});
 
 var decodeToken = function(req, res, next) {
   var token = req.headers.token;
