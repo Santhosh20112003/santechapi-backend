@@ -57,8 +57,8 @@ app.get('/getapiKeys',decodeToken,(req,res)=>{
 
 })
 
-app.get('/getcounts',decodeToken,async(req,res)=>{
-  const email = req.userdetails.email;
+app.get('/getcounts',async(req,res)=>{
+  const email = jwt.verify(req.userdetails.email, 'santhoshasjfaeyuea')
 
   try{
     const apiResults = await UserModel.find({email:email});
