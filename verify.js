@@ -1,13 +1,19 @@
 var admin = require("./configuration.js");
 
-var decodeToken = async function (req, res, next) {
+var decodeToken = function(req, res, next) {
   var token = req.headers.token;
   console.log();
 
   try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.userdetails = decodedToken;
-    next();
+    admin.auth().verifyIdToken(token)
+      .then(function(decodedToken) {
+        req.userdetails = decodedToken;
+        next();
+      })
+      .catch(function(error) {
+        console.error("Error verifying ID token:", error);
+        res.status(401).json("Invalid Access Token May be Expired");
+      });
   } catch (error) {
     console.error("Error verifying ID token:", error);
     res.status(401).json("Invalid Access Token May be Expired");
