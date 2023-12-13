@@ -105,25 +105,17 @@ app.get('/getallapis', decodeToken, async (req, res) => {
   }
 });
 
-app.get('/getheaders',(req,res)=>{
-  let token = req.headers.token;
-
+app.get('/getheaders', async (req, res) => {
   try {
-    admin.auth().verifyIdToken(token)
-      .then(function(decodedToken) {
-        req.userdetails = decodedToken;
-        res.json(decodedToken);
-      })
-      .catch(function(error) {
-        console.error("Error verifying ID token:", error);
-        res.status(401).json("Invalid Access Token May be Expired");
-      });
+    const token = req.headers.token;
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    req.userdetails = decodedToken;
+    res.json(decodedToken);
   } catch (error) {
     console.error("Error verifying ID token:", error);
-    res.status(401).json("Invalid Access Token May be Expired"+error);
+    res.status(401).json("Invalid Access Token, may be expired");
   }
-  res.json(header);
-})
+});
 
 app.get('/getapis',(req,res)=>{
 
