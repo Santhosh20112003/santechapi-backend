@@ -2,8 +2,6 @@ var admin = require("./configuration.js");
 
 var decodeToken = function(req, res, next) {
   var token = req.headers.token;
-  console.log();
-
   try {
     admin.auth().verifyIdToken(token)
       .then(function(decodedToken) {

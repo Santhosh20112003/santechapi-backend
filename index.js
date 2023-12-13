@@ -32,6 +32,7 @@ mongoose
     console.error("MongoDB connection error:", error);
     process.exit(1); 
   });
+  
 
   app.get("/", (req, res) => {
     res.send("Welcome to Santhosh Technologies Api Hub Backend");
@@ -55,8 +56,8 @@ app.get('/getapiKeys',decodeToken,(req,res)=>{
 
 })
 
-app.get('/getcounts',decodeToken,async(req,res)=>{
-  const email = req.userdetails.email;
+app.get('/getcounts/:email',async(req,res)=>{
+  const email = req.params.email;
 
   try{
     const apiResults = await UserModel.find({email:email});
