@@ -10,7 +10,7 @@ const jwt = require ('jsonwebtoken');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+const port = 5000;
 
 app.use(cors({
   origin:["https://santechapihubs.vercel.app"],
@@ -34,7 +34,7 @@ mongoose
   });
 
   app.get("/", (req, res) => {
-    res.send("Welcome to Santhosh Technologies Api Hub");
+    res.send("Welcome to Santhosh Technologies Api Hub Backend");
   });
 
 app.get('/getapiKeys',decodeToken,(req,res)=>{
