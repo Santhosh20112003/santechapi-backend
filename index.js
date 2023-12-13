@@ -120,7 +120,7 @@ app.get('/getheaders',(req,res)=>{
       });
   } catch (error) {
     console.error("Error verifying ID token:", error);
-    res.status(401).json("Invalid Access Token May be Expired");
+    res.status(401).json("Invalid Access Token May be Expired"+error);
   }
   res.json(header);
 })
