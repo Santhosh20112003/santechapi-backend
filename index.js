@@ -56,8 +56,8 @@ app.get('/getapiKeys',decodeToken,(req,res)=>{
 
 })
 
-app.get('/getcounts/:email',async(req,res)=>{
-  const email = req.params.email;
+app.get('/getcounts',decodeToken,async(req,res)=>{
+  const email = req.userdetails.email;
 
   try{
     const apiResults = await UserModel.find({email:email});
