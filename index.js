@@ -104,6 +104,11 @@ app.get('/getallapis', decodeToken, async (req, res) => {
   }
 });
 
+app.get('/getheaders',(req,res)=>{
+  let header = req.headers.token;
+  res.json(header);
+})
+
 app.get('/getapis',(req,res)=>{
 
   try{
