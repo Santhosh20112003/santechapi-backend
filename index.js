@@ -6,6 +6,7 @@ const UserModel = require ('./models/users.js');
 const apihubModel = require ("./models/apihub.js");
 const decodeToken = require ('./verify.js');
 const jwt = require ('jsonwebtoken');
+var admin = require("./configuration.js");
 
 dotenv.config();
 
@@ -105,7 +106,22 @@ app.get('/getallapis', decodeToken, async (req, res) => {
 });
 
 app.get('/getheaders',(req,res)=>{
-  let header = req.headers.token;
+  let token = req.headers.token;
+
+  try {
+    admin.auth().verifyIdToken(token)
+      .then(function(decodedToken) {
+        req.userdetails = decodedToken;
+        res.json(decodedToken);
+      })
+      .catch(function(error) {
+        console.error("Error verifying ID token:", error);
+        res.status(401).json("Invalid Access Token May be Expired");
+      });
+  } catch (error) {
+    console.error("Error verifying ID token:", error);
+    res.status(401).json("Invalid Access Token May be Expired");
+  }
   res.json(header);
 })
 
