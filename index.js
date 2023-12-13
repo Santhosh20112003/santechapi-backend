@@ -19,21 +19,23 @@ app.use(cors({
 }));
 app.use(express.json());
 
-mongoose.connect(process.env.ATLAS_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose
+  .connect(process.env.ATLAS_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .then(() => {
     console.log("MongoDB database connection established successfully");
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);
-    process.exit(1);
+    process.exit(1); 
   });
 
-  // app.get("/", (req, res) => {
-  //   res.send("Welcome to Santhosh Technologies Api Hub");
-  // });
+  app.get("/", (req, res) => {
+    res.send("Welcome to Santhosh Technologies Api Hub");
+  });
 
 app.get('/getapiKeys',decodeToken,(req,res)=>{
   const email = req.userdetails.email;
