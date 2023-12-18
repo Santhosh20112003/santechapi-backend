@@ -15,8 +15,7 @@ const port = 5000;
 
 app.use(cors({
   origin:["https://santechapihubs.vercel.app"],
-  methods:["GET","POST","DELETE","PUT"],
-  credentials:true
+  methods:["GET","POST","DELETE","PUT"]
 }));
 app.use(express.json());
 
