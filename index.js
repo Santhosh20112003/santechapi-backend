@@ -235,8 +235,8 @@ app.delete('/deleteapiKeys/:token',decodeToken, (req, res) => {
     console.log(`Api Key Deleted ${apikey}`)
 });
 
-app.get('/addSubscribeApi/:api', decodeToken, (req, res) => {
-  const email = req.userdetails.email;
+app.post('/addSubscribeApi/:api', decodeToken, (req, res) => {
+  const email = req.body.email;
   const api = req.params.api;
 
   UserModel.findOneAndUpdate(
