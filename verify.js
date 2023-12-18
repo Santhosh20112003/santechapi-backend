@@ -1,11 +1,9 @@
 // var admin = require("./configuration.js");
 
 var decodeToken = function(req, res, next) {
-  var {email} = req.body;
   var {secret} = req.headers;
 
   if(secret === process.env.CLIET_SECRET){
-    req.userdetails = {email:email};
     next();
   }
   else{
