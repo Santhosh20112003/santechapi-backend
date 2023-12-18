@@ -220,13 +220,9 @@ app.post('/deleteapiKeys/:token',decodeToken, (req, res) => {
     }
   )
     .then((result) => {
-      console.log(result)
-      if (result.modifiedCount > 0) {
+      
         res.sendStatus(200); 
-      } else {
-        console.log(result);
-        res.sendStatus(404);
-      }
+      
     })
     .catch((err) => {
       console.error(err);
