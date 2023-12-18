@@ -138,8 +138,8 @@ app.get('/getapis',(req,res)=>{
 
 })
 
-app.get('/getsubscribedapis', decodeToken, (req, res) => {
-  const email = req.userdetails.email;
+app.get('/getsubscribedapis', (req, res) => {
+  const email = req.body.email;
 
   UserModel.findOne({ email: email }, { subscribed: 1 })
     .then(user => {
