@@ -160,7 +160,7 @@ app.post('/getsubscribedapis', (req, res) => {
     });
 });
  
-app.get('/createapikey', decodeToken, (req, res) => {
+app.post('/createapikey', decodeToken, (req, res) => {
   const email = req.body.email;
 
   UserModel.findOne({ email: email })
@@ -204,7 +204,7 @@ app.get('/createapikey', decodeToken, (req, res) => {
     });
 });
 
-app.delete('/deleteapiKeys/:token',decodeToken, (req, res) => {
+app.post('/deleteapiKeys/:token',decodeToken, (req, res) => {
   const email = req.body.email;
   const apikey = req.params.token;
 
