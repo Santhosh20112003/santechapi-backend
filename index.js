@@ -256,8 +256,8 @@ app.post('/addSubscribeApi/:api', decodeToken, (req, res) => {
     });
 });
 
-app.get('/removeSubscribeApi/:api', decodeToken, (req, res) => {
-  const email = req.userdetails.email;
+app.post('/removeSubscribeApi/:api', decodeToken, (req, res) => {
+  const email = req.body.email;
   const api = req.params.api;
 
   UserModel.findOneAndUpdate(
