@@ -57,7 +57,7 @@ app.post('/getapiKeys',(req,res)=>{
 })
 
 app.post('/getcounts',async(req,res)=>{
-  const email = jwt.verify(req.userdetails.email, 'santhoshasjfaeyuea')
+  const email = jwt.verify(req.body.email, 'santhoshasjfaeyuea')
 
   try{
     const apiResults = await UserModel.find({email:email});
