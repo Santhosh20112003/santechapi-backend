@@ -162,6 +162,7 @@ app.post('/getsubscribedapis', (req, res) => {
  
 app.get('/createapikey', decodeToken, (req, res) => {
   const email = req.userdetails.email;
+  
   UserModel.findOne({ email: email })
     .then(user => {
       if (user) {
