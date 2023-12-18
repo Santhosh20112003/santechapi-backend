@@ -76,9 +76,9 @@ app.get('/getcounts',async(req,res)=>{
   
 })
 
-app.get('/getallapis', decodeToken, async (req, res) => {
+app.post('/getallapis', decodeToken, async (req, res) => {
   try {
-    const email = req.userdetails.email;
+    const email = req.body.email;
 
     const apiResults = await apihubModel.find();
 
@@ -224,6 +224,7 @@ app.delete('/deleteapiKeys/:token',decodeToken, (req, res) => {
       if (result.modifiedCount > 0) {
         res.sendStatus(200); 
       } else {
+        console.log(result);
         res.sendStatus(404);
       }
     })
