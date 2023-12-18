@@ -38,7 +38,7 @@ mongoose
     res.send("Welcome to Santhosh Technologies Api Hub Backend");
   });
 
-app.get('/getapiKeys',(req,res)=>{
+app.post('/getapiKeys',(req,res)=>{
   const email = req.body.email;
 
   UserModel.find({ email: email }, { tokens: 1 })
@@ -137,7 +137,7 @@ app.get('/getapis',(req,res)=>{
 
 })
 
-app.get('/getsubscribedapis', (req, res) => {
+app.post('/getsubscribedapis', (req, res) => {
   const email = req.body.email;
 
   UserModel.findOne({ email: email }, { subscribed: 1 })
