@@ -56,7 +56,7 @@ app.post('/getapiKeys',(req,res)=>{
 
 })
 
-app.get('/getcounts',async(req,res)=>{
+app.post('/getcounts',async(req,res)=>{
   const email = jwt.verify(req.userdetails.email, 'santhoshasjfaeyuea')
 
   try{
