@@ -205,7 +205,7 @@ app.get('/createapikey', decodeToken, (req, res) => {
 });
 
 app.delete('/deleteapiKeys/:token',decodeToken, (req, res) => {
-  const email = req.userdetails.email;
+  const email = req.body.email;
   const apikey = req.params.token;
 
   UserModel.updateOne(
