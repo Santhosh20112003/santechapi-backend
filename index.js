@@ -14,9 +14,9 @@ const app = express();
 const port = 5000;
 
 app.use(cors({
-  origin:["https://santechapihubs.vercel.app"],
-  methods:["GET","POST","DELETE","PUT"]
+  origin:'https://santechapihubs.vercel.app'
 }));
+
 app.use(express.json());
 
 mongoose
