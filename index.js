@@ -44,6 +44,8 @@ var transporter = nodemailer.createTransport({
   },
 });
 
+
+
 app.get("/", (req, res) => {
   res.send("Welcome to Santhosh Technologies Api Hub Backend");
 });
