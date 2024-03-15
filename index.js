@@ -27,7 +27,6 @@ mongoose
   .connect(process.env.ATLAS_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
   })
   .then(() => {
     console.log("MongoDB database connection established successfully");
