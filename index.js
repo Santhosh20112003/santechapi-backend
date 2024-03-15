@@ -22,6 +22,7 @@ app.use(
 
 app.use(express.json());
 
+
 mongoose
   .connect(process.env.ATLAS_URI, {
     useNewUrlParser: true,
@@ -33,7 +34,7 @@ mongoose
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);
-    process.exit(1);
+    process.exit(1); 
   });
 
 var transporter = nodemailer.createTransport({
