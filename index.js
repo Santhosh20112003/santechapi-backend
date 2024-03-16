@@ -365,7 +365,6 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 <p style="line-height: 140%;"> </p>
 <p style="line-height: 140%;"> 3   Test your subscribed APIs by adding your API key as a header </p>
 <p style="line-height: 140%;">     (key: "token", value: your API key) in this link. </p>
-(key: "token", value: your API key) in this link.
 <p style="line-height: 140%;">       <a href="https://santechapitool.vercel.app/">https://santechapitool.vercel.app/</a></p>
 <p style="line-height: 140%;"> </p>
   </div>
