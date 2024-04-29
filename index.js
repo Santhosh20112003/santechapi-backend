@@ -16,7 +16,7 @@ const port = 5000;
 
 app.use(
   cors({
-    origin: ["https://santechapihubs.vercel.app","http://localhost:3000"],
+    origin: ["https://santechapihubs.vercel.app","http://localhost:3000"]
   })
 );
 
