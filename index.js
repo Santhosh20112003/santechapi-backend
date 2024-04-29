@@ -16,12 +16,11 @@ const port = 5000;
 
 app.use(
   cors({
-    origin: "https://santechapihubs.vercel.app",
+    origin: ["https://santechapihubs.vercel.app","http://localhost:3000"],
   })
 );
 
 app.use(express.json());
-
 
 mongoose
   .connect(process.env.ATLAS_URI, {
@@ -33,12 +32,12 @@ mongoose
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);
-    process.exit(1); 
+    process.exit(1);
   });
 
 var transporter = nodemailer.createTransport({
   service: "gmail",
-  host: 'smtp.gmail.com',
+  host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
@@ -46,8 +45,6 @@ var transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
-
-
 
 app.get("/", (req, res) => {
   res.send("Welcome to Santhosh Technologies Api Hub Backend");
